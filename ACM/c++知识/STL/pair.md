@@ -1,63 +1,38 @@
-# C++ unique()去重
+# C++ pair
 
-><h2>底层原理</h2>
->> 代码模拟
->> ```c++
->> template <class ForwardIterator>
->>   ForwardIterator unique (ForwardIterator first, ForwardIterator last)
->> {
->>   if (first==last) return last;
->> 
->>   ForwardIterator result = first;
->>   while (++first != last)
->>   {
->>     if (!(*result == *first))  // or: if (!pred(*result,*first)) for version (2)
->>       *(++result)=*first;
->>   }
->>   return ++result;
->> }
+> <h3>底层原理</h3>
 >
->>   
->>
->>   ```c++
->>   vector<int>::iterator unique(vector<int>&a) {
->>   //i用来遍历所有数, j用来指示存到了第几个元素了
->>   	int j = 0;
->>       for (int i = 0; i < a.size(); i++) {
->>         	if(!i || a[i - 1] != a[i]) a[j++] = a[i];
->>       }
->>   //a.begin()是迭代器(iterator)类型不能单独返回j否则是error
->>   return a.begin() + j;
->>   }
->>   ```
+> 
 >
+> <h3>总述</h3>
 >
+> ​     pair是将**2个数据组合成一组数据**，当需要这样的需求时就可以使用pair，如stl中的map就是将key和value放在一起来保存。另一个应用是，当一个函数需要返回2个数据的时候，可以选择pair。 **pair的实现是一个结构体，主要的两个成员变量是first second 因为是使用struct不是class，所以可以直接使用pair的成员变量**。
+> 
 >
-><h2>总述</h2>
+> <h3>用法</h3>
 >
->> unique函数的函数原型如下：
+> ​    **pair将一对值(T1和T2)组合成一个值**，
 >
->> 1.只有两个参数，且参数类型都是迭代器：
->> ```c++
->> iterator unique(iterator it_1,iterator it_2);
->> ```
->> 2.有三个参数，且前两个参数类型为迭代器，最后一个参数类型可以看作是bool类型：
+> ​    这一对值可以具有不同的数据类型（T1和T2），
 >
->> ```c++
->> iterator unique(iterator it_1,iterator it_2,bool MyFunc);
->> ```
+> ​    两个值可以分别**用pair的两个公有函数first和second访问**。
 >
-><h2>使用方法</h2>
+> ```c++
+> //可以用typedef 避免繁琐的书写
+> typedef pair<int, int> PII
+> //pair的使用
+> vetor<PII>vec;
+> 
+> for (auto it : vec) {
+>     it.first;
+>     it.second;
+> }
+> ```
 >
->1. 这里的第三个参数表示的是**自定义元素是否相等**。也就是说通过自定义两个元素相等的规则，来对容器中元素进行去重。这里的第三个参数与STL中sort函数的第三个参数功能类似
->2. unique函数通常和erase函数一起使用，来达到删除重复元素的目的。(注：此处的删除是真正的删除，即从容器中去除重复的元素，**容器的长度也发生了变换**；而单纯的使用unique函数的话，**容器的长度并没有发生变化**，只是元素的位置发生了变化)
+>  还可以利用**make_pair**创建新的pair对象
 >
->
->
-><h2>注意事项</h2>
->
->1.有很多文章说的是，unique去重的过程是将重复的元素移到容器的后面去，实际上这种说法并不正确，**应该是把不重复的元素移到前面来**。
->
->2.一定不要忘记的是，unique函数在使用前**需要对容器中的元素进行排序**(当然不是必须的，但我们绝大数情况下需要这么做)，由于本例中的元素已经是排好序的，所以此处我没排序，但实际使用中不要忘记。
->
->
+> ```c++
+> //可以用typedef 避免繁琐的书写
+> typedef pair<int, int> PII
+> PII it = make_pair(1, 2);
+
