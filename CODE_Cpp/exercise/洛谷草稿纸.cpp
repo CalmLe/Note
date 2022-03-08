@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-const int N = 1e3 + 10;
+#include <string>
+c110onst int N = 1e3 + 10;
 int maxx = -0x7fffffff;
 int arr[N][N];
 int max (int a, int b) {

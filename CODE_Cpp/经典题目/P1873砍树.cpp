@@ -22,7 +22,6 @@ bool check(int mid) {
 int find() {
     int l = -1, r = 1e9;
     while(l + 1 < r) {
-        //这个mid一定要放进来，老是出现低级错误
         int mid = (r - l >> 1) + l;
         if(check(mid)) l = mid;
         else r = mid;
