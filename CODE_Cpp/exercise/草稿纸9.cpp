@@ -2,6 +2,7 @@
 using namespace std;
 const int maxn = 2e5 + 20;
 typedef long long LL;
+//这里的amt可能会溢出
 LL amt, temp;
 int arr[maxn], n, x;
 inline int read() {
@@ -19,7 +20,7 @@ int main(void) {
         if(arr[i] + arr[i - 1] > x) {
             temp = arr[i] + arr[i - 1] - x;
             amt += temp;
-            //其实这里的根本不可能出现arr[i] >= temp,若出现了则arr[i - 1] >= x了就不会进入这个条件里面
+            //其实这里的根本不可能出现arr[i] >= temp,因为(arr[i - 1] - x) >=　0 所以不会出现下面情况
             if(arr[i] >= temp) arr[i] -= temp;
             else arr[i] = 0;
         } 
