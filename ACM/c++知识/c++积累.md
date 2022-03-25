@@ -412,16 +412,132 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 >     int x = 10;
 >     double y = 20.4114;
 >     long z = 1000;
->     
+>                 
 >     p = &x;
 >     cout << *(int*)p << endl;        //必须强制转换
->     
+>                 
 >     p = &y;
 >     cout << *(double*)p << endl;	//必须强制转换
->     
+>                 
 >     p = &z;
 >     cout << *(long*)p << endl;		//必须强制转换	
 >     return 0;
 >     ```
 >
->     
+
+
+
+
+
+
+
+# c++预处理
+
+
+
+## 1.条件编译 ##
+
+> # ifndef/define/endif
+>
+>
+> > 作用：
+> > * **防止头文件被重复包含和编译。**头文件重复包含会增加程序大小，增加编译时间
+> >
+> >     ```c++
+> >     未加条件编译
+> >     //test.cpp
+> >     #include "file1.h"
+> >     #include "file2.h"
+> >     int main(void) {
+> >      myprint();
+> >      return 0;
+> >     }
+> >     
+> >     //file1.h
+> >     #include <iostream>
+> >     
+> >     //file2.h
+> >     #include "file1.h"
+> >     void myprint() {
+> >         cout << "hello world" << endl; 
+> >     }
+> >     
+> >     这里编译时成了这样的了
+> >     #include <iostream>
+> >     #include "file2.h" 
+> >     #include <iostream>
+> >     增加条件编译之后变成如下了
+> >     ```
+> >
+> >     ```c++
+> >     加条件编译之后
+> >     //test.cpp
+> >     #include "file1.h"
+> >     #include "file2.h"
+> >     int main(void) {
+> >      myprint();
+> >      return 0;
+> >     }
+> >     
+> >     //file1.h
+> >     #ifndef FILE1_H
+> >     #define FILE1_H
+> >     
+> >     #include <iostream>
+> >     
+> >     #endif
+> >     
+> >     //file2.h
+> >     #ifndef FILE2_H
+> >     #define FILE2_H
+> >     
+> >     #include "file1.h"
+> >     void myprint() {
+> >         cout << "hello world" << endl; 
+> >     }
+> >     
+> >     #endif
+> >     ```
+> >
+> >     
+> >
+> > * **防止无限循环编译**
+> >
+> >     ```c++
+> >     没有条件编译指令
+> >     //file1.h
+> >     #include "file2.h"
+> >     
+> >     //file2.h
+> >     #include "file1.h"
+> >     
+> >      会出现无限编译的情况
+> >     ```
+> >
+> >     ```c++
+> >     解决方法
+> >     //file1.h
+> >     #ifndef FILE1_H
+> >     #define FILE1_H
+> >     
+> >     #include "file2.h"
+> >     
+> >     #endif
+> >     
+> >     
+> >     //file2.h
+> >     #ifndef FILE2_H
+> >     #define FILE2_H
+> >     
+> >     #include "file1.h"
+> >     
+> >     #endif
+> >     ```
+> >
+> > * **防止全局变量的重复定义**
+> >
+> >     ```c++
+> >     通过上面的例子应该很容易理解这种情况了
+> >     ```
+> >
+> >     
