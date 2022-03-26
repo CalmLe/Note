@@ -1,3 +1,30 @@
+# c++STL
+## unorded_map容器 ##
+
+### 底层原理
+>**哈希表**
+>
+>
+>
+### 特性
+>
+>**key无序，key不可以重复，key不可以修改**
+>
+>
+>
+### 复杂度
+>
+>查询效率 : $O(1)$
+>
+>增删效率 : $O(1)$
+>
+### 常用函数
+>* `.count(key)` 接受参数key在unordered_map容器检查是否含有指定的key,有返回1没有返回0
+>
+>
+>
+
+
 # c++函数
 
 
@@ -412,13 +439,13 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 >     int x = 10;
 >     double y = 20.4114;
 >     long z = 1000;
->                 
+>                                                     
 >     p = &x;
 >     cout << *(int*)p << endl;        //必须强制转换
->                 
+>                                                     
 >     p = &y;
 >     cout << *(double*)p << endl;	//必须强制转换
->                 
+>                                                     
 >     p = &z;
 >     cout << *(long*)p << endl;		//必须强制转换	
 >     return 0;
@@ -452,16 +479,16 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >      myprint();
 > >      return 0;
 > >     }
-> >     
+> >                                         
 > >     //file1.h
 > >     #include <iostream>
-> >     
+> >                                         
 > >     //file2.h
 > >     #include "file1.h"
 > >     void myprint() {
 > >         cout << "hello world" << endl; 
 > >     }
-> >     
+> >                                         
 > >     这里编译时成了这样的了
 > >     #include <iostream>
 > >     #include "file2.h" 
@@ -478,24 +505,24 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >      myprint();
 > >      return 0;
 > >     }
-> >     
+> >                                         
 > >     //file1.h
 > >     #ifndef FILE1_H
 > >     #define FILE1_H
-> >     
+> >                                         
 > >     #include <iostream>
-> >     
+> >                                         
 > >     #endif
-> >     
+> >                                         
 > >     //file2.h
 > >     #ifndef FILE2_H
 > >     #define FILE2_H
-> >     
+> >                                         
 > >     #include "file1.h"
 > >     void myprint() {
 > >         cout << "hello world" << endl; 
 > >     }
-> >     
+> >                                         
 > >     #endif
 > >     ```
 > >
@@ -507,10 +534,10 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >     没有条件编译指令
 > >     //file1.h
 > >     #include "file2.h"
-> >     
+> >                                         
 > >     //file2.h
 > >     #include "file1.h"
-> >     
+> >                                         
 > >      会出现无限编译的情况
 > >     ```
 > >
@@ -519,18 +546,18 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >     //file1.h
 > >     #ifndef FILE1_H
 > >     #define FILE1_H
-> >     
+> >                                         
 > >     #include "file2.h"
-> >     
+> >                                         
 > >     #endif
 > >     
 > >     
 > >     //file2.h
 > >     #ifndef FILE2_H
 > >     #define FILE2_H
-> >     
+> >                                         
 > >     #include "file1.h"
-> >     
+> >                                         
 > >     #endif
 > >     ```
 > >
