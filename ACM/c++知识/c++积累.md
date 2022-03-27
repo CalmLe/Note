@@ -1,4 +1,56 @@
-# c++STL
+# oop特性
+
+
+
+## 运算符重载 ##
+
+
+
+
+
+## 友元 ##
+
+> `友元`：c++**控制对类私有部分的访问**，通常情况下提供了共有方法唯一的访问途径，但这个有时候不太方便，c++提供了**另一种形式的访问：`友元`**
+>
+> 友元的分类：
+>
+> * **友元函数**
+> * **友元成员函数**
+> * **友元类**
+
+
+
+### 1.友元函数 
+
+> `友元函数`：赋予与该类的成员函数相同的访问权限，类的友元函数是**非成员函数**，但是其**访问权限与成员函数相同**
+>
+> 创建友元函数: 
+>
+> ```c++
+> class Time{
+> 	//省略很多东西
+>     
+>     // 1.只有类声明中的原型中才能用friend关键字，除非函数定义也是原型，否则不能在函数定义中使用friend关键字
+> 	friend Time operator * (double m, const Time& t);   
+> };
+> 
+> //2.不能在这里使用关键字friend,同时不需要Time::限定符，因为它不属于成员函数
+> Time operator * (double m, const Time& t) {
+>     
+> }
+> ```
+>
+> > **注意事项：**
+> >
+> > * 只有类声明中的原型中**才能用friend关键字**，除非函数定义也是原型，否则不能在函数定义中使用friend关键字
+> > * **不需要 类名::限定符**，因为它不属于成员函数
+
+
+
+
+
+# STL
+
 ## unorded_map容器 ##
 
 ### 底层原理
@@ -7,7 +59,6 @@
 >
 >
 ### 特性
->
 >**key无序，key不可以重复，key不可以修改**
 >
 >
@@ -25,7 +76,7 @@
 >
 
 
-# c++函数
+# 函数
 
 
 
@@ -58,7 +109,7 @@ void *memset(void *str, int c, size_t n)
 
 
 
-# c++修饰符
+# 修饰符
 
 
 
@@ -225,7 +276,7 @@ cout << x << endl;
 
 
 
-# c++关键字
+# 关键字
 
 ## 1.static关键字 ##
 
@@ -377,7 +428,9 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 
 
 
-# c++指针
+## 2.关键字 
+
+# 指针
 
 
 
@@ -439,13 +492,13 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 >     int x = 10;
 >     double y = 20.4114;
 >     long z = 1000;
->                                                     
+>                                                                         
 >     p = &x;
 >     cout << *(int*)p << endl;        //必须强制转换
->                                                     
+>                                                                         
 >     p = &y;
 >     cout << *(double*)p << endl;	//必须强制转换
->                                                     
+>                                                                         
 >     p = &z;
 >     cout << *(long*)p << endl;		//必须强制转换	
 >     return 0;
@@ -458,7 +511,7 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 
 
 
-# c++预处理
+# 预处理
 
 
 
@@ -479,16 +532,16 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >      myprint();
 > >      return 0;
 > >     }
-> >                                         
+> >                                                             
 > >     //file1.h
 > >     #include <iostream>
-> >                                         
+> >                                                             
 > >     //file2.h
 > >     #include "file1.h"
 > >     void myprint() {
 > >         cout << "hello world" << endl; 
 > >     }
-> >                                         
+> >                                                             
 > >     这里编译时成了这样的了
 > >     #include <iostream>
 > >     #include "file2.h" 
@@ -505,24 +558,24 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >      myprint();
 > >      return 0;
 > >     }
-> >                                         
+> >                                                             
 > >     //file1.h
 > >     #ifndef FILE1_H
 > >     #define FILE1_H
-> >                                         
+> >                                                             
 > >     #include <iostream>
-> >                                         
+> >                                                             
 > >     #endif
-> >                                         
+> >                                                             
 > >     //file2.h
 > >     #ifndef FILE2_H
 > >     #define FILE2_H
-> >                                         
+> >                                                             
 > >     #include "file1.h"
 > >     void myprint() {
 > >         cout << "hello world" << endl; 
 > >     }
-> >                                         
+> >                                                             
 > >     #endif
 > >     ```
 > >
@@ -534,10 +587,10 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >     没有条件编译指令
 > >     //file1.h
 > >     #include "file2.h"
-> >                                         
+> >                                                             
 > >     //file2.h
 > >     #include "file1.h"
-> >                                         
+> >                                                             
 > >      会出现无限编译的情况
 > >     ```
 > >
@@ -546,18 +599,18 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >     //file1.h
 > >     #ifndef FILE1_H
 > >     #define FILE1_H
-> >                                         
+> >                                                             
 > >     #include "file2.h"
-> >                                         
+> >                                                             
 > >     #endif
 > >     
 > >     
 > >     //file2.h
 > >     #ifndef FILE2_H
 > >     #define FILE2_H
-> >                                         
+> >                                                             
 > >     #include "file1.h"
-> >                                         
+> >                                                             
 > >     #endif
 > >     ```
 > >
