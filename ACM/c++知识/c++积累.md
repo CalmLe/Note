@@ -40,7 +40,7 @@
 >
 > * 重载后的运算符必须至少有一个操作位数是用户自定义的，这将防止用户为标准类型重在运算符
 >
-> * **某些运算符是不能重载的**
+> * **某些运算符是不能重载的**      （例如：`sizeof运算符`，`.成员运算符`，`作用域解析运算符::`
 >
 > * 大多数运算符都可以通过成员函数或者非成员函数的进行重载，但是下面四种运算符**只能通过成员函数进行承载**（常见的就是这四种）
 >
@@ -79,7 +79,8 @@
 >
 > > ##### 注意：
 > >
-> > * 非成员函数版本的重载运算符函数所需的**形参数目与运算符使用的操作数相同**；而成员版本所需的参数数目少一个，因为期中一个操作数是被隐式地传递的调用对象
+> > * 重载运算符函数的参数个数与运算符的操作位数有关，比如若是定义 `&ostream operator << (const T& t1, const T& t2)`，这个若是非成员函数版本则是对的，要是是成员函数版本就错了因为<<接受两个操作对象，这样的话就三个了错误
+> > * 非成员函数版本的重载运算符函数所需的**形参数目与运算符使用的操作数相同**；而成员版本所需的参数数目少一个，因为其中一个操作数是被隐式地传递的调用对象
 > > * 定义运算符时，必须选择其中一种格式，避免两种格式混用，因为这两种格式都与同一个表达式匹配，**同时定义这两种格式将被视为二义性错误，导致编译错误**
 
 
@@ -93,7 +94,7 @@
 >     #ifndef MYTIME_H_
 >     #define MYTIME_H_
 >     #include <iostream>
->     
+>                         
 >     class Time{
 >         private:
 >             int hours;
@@ -109,7 +110,7 @@
 >             friend Time operator *(const double& n, const Time& t) {return t * n;} //通过非成员函数进行重载
 >             friend std::ostream& operator <<(std::ostream& os, const Time& t);	   //通过非成员函数进行重载
 >     };
->     
+>                         
 >     #endif
 >     ```
 >
@@ -126,7 +127,7 @@
 >     #ifndef MYTIME_H_
 >     #define MYTIME_H_
 >     #include <iostream>
->     
+>                         
 >     class Time{
 >         private:
 >             int hours;
@@ -142,7 +143,7 @@
 >             friend Time operator *(const double& n, const Time& t) {return t * n;} //通过非成员函数进行重载
 >             friend std::ostream& operator <<(std::ostream& os, const Time& t);	   //通过非成员函数进行重载
 >     };
->     
+>                         
 >     #endif
 >     ```
 >
@@ -156,7 +157,7 @@
 >
 > 友元的分类：
 >
-> * **友元函数**
+> * **友元非成员函数**
 > * **友元成员函数**
 > * **友元类**
 
@@ -444,7 +445,7 @@ cout << x << endl;
 >> 
 >>
 >
->- const成员函数指的是，此函数不应该修改任何成员变量。
+>- const成员函数指的是，此函数**不应该修改this对象成员变量**（注意啊是this对象！！！！,同类非this对象也可以修改啊）。
 >
 >- 传给const成员函数的this指针，是**指向 const 对象 的 const 指针**
 >
@@ -678,13 +679,13 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 >     int x = 10;
 >     double y = 20.4114;
 >     long z = 1000;
->                                                                                                                         
+>                                                                                                                                             
 >     p = &x;
 >     cout << *(int*)p << endl;        //必须强制转换
->                                                                                                                         
+>                                                                                                                                             
 >     p = &y;
 >     cout << *(double*)p << endl;	//必须强制转换
->                                                                                                                         
+>                                                                                                                                             
 >     p = &z;
 >     cout << *(long*)p << endl;		//必须强制转换	
 >     return 0;
@@ -718,16 +719,16 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >      myprint();
 > >      return 0;
 > >     }
-> >                                                                                                             
+> >                                                                                                                                 
 > >     //file1.h
 > >     #include <iostream>
-> >                                                                                                             
+> >                                                                                                                                 
 > >     //file2.h
 > >     #include "file1.h"
 > >     void myprint() {
 > >         cout << "hello world" << endl; 
 > >     }
-> >                                                                                                             
+> >                                                                                                                                 
 > >     这里编译时成了这样的了
 > >     #include <iostream>
 > >     #include "file2.h" 
@@ -744,24 +745,24 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >      myprint();
 > >      return 0;
 > >     }
-> >                                                                                                             
+> >                                                                                                                                 
 > >     //file1.h
 > >     #ifndef FILE1_H
 > >     #define FILE1_H
-> >                                                                                                             
+> >                                                                                                                                 
 > >     #include <iostream>
-> >                                                                                                             
+> >                                                                                                                                 
 > >     #endif
-> >                                                                                                             
+> >                                                                                                                                 
 > >     //file2.h
 > >     #ifndef FILE2_H
 > >     #define FILE2_H
-> >                                                                                                             
+> >                                                                                                                                 
 > >     #include "file1.h"
 > >     void myprint() {
 > >         cout << "hello world" << endl; 
 > >     }
-> >                                                                                                             
+> >                                                                                                                                 
 > >     #endif
 > >     ```
 > >
@@ -773,10 +774,10 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >     没有条件编译指令
 > >     //file1.h
 > >     #include "file2.h"
-> >                                                                                                             
+> >                                                                                                                                 
 > >     //file2.h
 > >     #include "file1.h"
-> >                                                                                                             
+> >                                                                                                                                 
 > >      会出现无限编译的情况
 > >     ```
 > >
@@ -785,18 +786,18 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >     //file1.h
 > >     #ifndef FILE1_H
 > >     #define FILE1_H
-> >                                                                                                             
+> >                                                                                                                                 
 > >     #include "file2.h"
-> >                                                                                                             
+> >                                                                                                                                 
 > >     #endif
 > >     
 > >     
 > >     //file2.h
 > >     #ifndef FILE2_H
 > >     #define FILE2_H
-> >                                                                                                             
+> >                                                                                                                                 
 > >     #include "file1.h"
-> >                                                                                                             
+> >                                                                                                                                 
 > >     #endif
 > >     ```
 > >
@@ -807,3 +808,31 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >     ```
 > >
 > >     
+
+
+
+
+
+# 运算符
+
+## 1. i++跟++i
+
+> 区别：
+>
+> * `i++`是先对i进行操作再递增i,而`++i`是先递增再对i进行操作  ----------------------->  (这个区别是我已经掌握的)
+>
+> * 第二个区别就是：`i++` 不能作为左值，而`++i`可以。             ----------------------->  (这个区别是我没有掌握的)
+>
+>     ```c++
+>     int i = 10;
+>     
+>     (i++) = 100;   //错误,i++不能作为左值
+>     
+>     (++i) = 100;   //正确，++i可以作为左值
+>     ```
+>
+>     
+>
+>     
+>
+>     
