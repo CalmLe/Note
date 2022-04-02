@@ -6,7 +6,7 @@
 
 > #### 运算符重载
 >
-> 类似于函数的多态，但是这个并不是**函数重载或者函数多态**，**运算符重载是多态的一种形式**，编译器通过操作数的数目和类型决定使用哪种符号的定义，重载运算符让代码看起来更加自然
+> 类似于函数的多态，编译器通过**操作数的数目和类型**决定使用哪种符号的定义，重载运算符让代码看起来更加自然
 >
 > > ##### 运算符重载的例子
 > >
@@ -38,7 +38,7 @@
 >
 > * 使用运算符不能违反运算符原来运算符的规则，已经不能破坏优先级
 >
-> * 重载后的运算符必须至少有一个操作位数是用户自定义的，这将防止用户为标准类型重在运算符
+> * 重载后的运算符必须至少有一个操作位数是用户自定义的，这将防止用户为标准类型重载运算符
 >
 > * **某些运算符是不能重载的**      （例如：`sizeof运算符`，`.成员运算符`，`作用域解析运算符::`
 >
@@ -71,11 +71,23 @@
 >         friend Time operator + (const Time& t1, const Time& t2);  //友元非成员函数
 >     };
 >     Time operator + (const Time& t1, const Time& t2) {
->                                                                                                                 
+>             
 >     }
 >     ```
+> ##### 如何运算符重载(具体应该考虑哪些地方)
 >
-> 
+> > * 成员函数重载还是全局函数重载（全局常常要定义成有友元函数）
+> >
+> > * 思考运算符重载函数的返回值应该是什么?（因为这关系到是否可以**连续操作**）
+> >
+> >     ```c++
+> >     //例如
+> >     cout << point1 << point2 << endl;
+> >     point1 += point2 += point3
+> >     ```
+> >
+> >     
+>
 >
 > > ##### 注意：
 > >
@@ -94,7 +106,7 @@
 >     #ifndef MYTIME_H_
 >     #define MYTIME_H_
 >     #include <iostream>
->                                                                                                                                     
+>                                                                                                                                                             
 >     class Time{
 >         private:
 >             int hours;
@@ -110,7 +122,7 @@
 >             friend Time operator *(const double& n, const Time& t) {return t * n;} //通过非成员函数进行重载
 >             friend std::ostream& operator <<(std::ostream& os, const Time& t);	   //通过非成员函数进行重载
 >     };
->                                                                                                                                     
+>                                                                                                                                                             
 >     #endif
 >     ```
 >
@@ -127,7 +139,7 @@
 >     #ifndef MYTIME_H_
 >     #define MYTIME_H_
 >     #include <iostream>
->                                                                                                                                     
+>                                                                                                                                                             
 >     class Time{
 >         private:
 >             int hours;
@@ -143,7 +155,7 @@
 >             friend Time operator *(const double& n, const Time& t) {return t * n;} //通过非成员函数进行重载
 >             friend std::ostream& operator <<(std::ostream& os, const Time& t);	   //通过非成员函数进行重载
 >     };
->                                                                                                                                     
+>                                                                                                                                                             
 >     #endif
 >     ```
 >
@@ -153,13 +165,13 @@
 
 ## 友元 ##
 
-> `友元`：c++**控制对类私有部分的访问**，通常情况下提供了共有方法唯一的访问途径，但这个有时候不太方便，c++提供了**另一种形式的访问：`友元`**
+> `友元`：c++**控制对类私有部分的访问**，通常情况下提供了共有方法唯一的访问途径，但这个有时候不太方便，c++提供了**另一种形式的访问：`友元`**（**友元打破了c++的封装性**）
 >
 > 友元的分类：
 >
 > * **友元非成员函数**
 > * **友元成员函数**
-> * **友元类**
+> * **友元类**（**注意：相同的class的各个对象是互为friend**）
 
 
 
@@ -379,7 +391,7 @@
 >     	Point(int x = 0, int y = 0):x(x), y(y);    //初值化列表               
 >         Point():x(0),y(0);
 >     };
->                                     
+>                                                             
 >     ```
 >
 >     
@@ -888,13 +900,13 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 >     int x = 10;
 >     double y = 20.4114;
 >     long z = 1000;
->                                                                                                                                                                                                                                                         
+>                                                                                                                                                                                                                                                                                 
 >     p = &x;
 >     cout << *(int*)p << endl;        //必须强制转换
->                                                                                                                                                                                                                                                         
+>                                                                                                                                                                                                                                                                                 
 >     p = &y;
 >     cout << *(double*)p << endl;	//必须强制转换
->                                                                                                                                                                                                                                                         
+>                                                                                                                                                                                                                                                                                 
 >     p = &z;
 >     cout << *(long*)p << endl;		//必须强制转换	
 >     return 0;
@@ -928,16 +940,16 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >      myprint();
 > >      return 0;
 > >     }
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     //file1.h
 > >     #include <iostream>
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     //file2.h
 > >     #include "file1.h"
 > >     void myprint() {
 > >         cout << "hello world" << endl; 
 > >     }
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     这里编译时成了这样的了
 > >     #include <iostream>
 > >     #include "file2.h" 
@@ -954,24 +966,24 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >      myprint();
 > >      return 0;
 > >     }
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     //file1.h
 > >     #ifndef FILE1_H
 > >     #define FILE1_H
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     #include <iostream>
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     #endif
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     //file2.h
 > >     #ifndef FILE2_H
 > >     #define FILE2_H
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     #include "file1.h"
 > >     void myprint() {
 > >         cout << "hello world" << endl; 
 > >     }
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     #endif
 > >     ```
 > >
@@ -983,10 +995,10 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >     没有条件编译指令
 > >     //file1.h
 > >     #include "file2.h"
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     //file2.h
 > >     #include "file1.h"
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >      会出现无限编译的情况
 > >     ```
 > >
@@ -995,18 +1007,18 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > >     //file1.h
 > >     #ifndef FILE1_H
 > >     #define FILE1_H
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     #include "file2.h"
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     #endif
 > >     
 > >     
 > >     //file2.h
 > >     #ifndef FILE2_H
 > >     #define FILE2_H
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     #include "file1.h"
-> >                                                                                                                                                                                                                                             
+> >                                                                                                                                                                                                                                                                     
 > >     #endif
 > >     ```
 > >
@@ -1034,9 +1046,9 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 >
 >     ```c++
 >     int i = 10;
->                                                                                                                 
+>                                                                                                                                         
 >     (i++) = 100;   //错误,i++不能作为左值
->                                                                                                                 
+>                                                                                                                                         
 >     (++i) = 100;   //正确，++i可以作为左值
 >     ```
 >
@@ -1048,9 +1060,73 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 
 
 
+# 作用域
 
 
 
+
+
+## 1.stack
+
+> `stack`是存在于scope的一块内存空间，例如调用函数，函数本身就会形成一个stack用来存放参数，以及定义的变量，超过这个函数的作用域后其生命将自动结束(所以这也是为什么不能返回这个作用域内创建变量的地址或者引用，因为超过这个scope其生命自动结束)
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 2.heap
+
+> `heap`是指由操作系统提供的一块global的内存空间，程序可分配从其中获得若干区块，但是注意，这得**主动释放**
+
+
+
+
+
+
+
+
+
+
+
+## 3.static
+
+> `static`局部变量，其生命在作用域结束后任然存在，直到整个程序结束，但不能跨文件；
+>
+> * 静态成员变量只有一份，所有对象，类本身都访问同一个
+> * **静态变量成员必须定义在class外部**
+> * 静态成员函数**没有this指针**，只用于存取静态数据，可以通过对象访问，也可以通过class name访问
+
+
+
+
+
+
+
+
+
+## 4.global
+
+> `global`全局变量，**其生命在作用域结束后仍然存在知道整个程序的结束，且可以用extern跨文件**
+
+
+
+## 5.其他
+
+> `typename()`没有名称临时对象，它的生命在下一行就消失
+>
+> ```c++
+> return complex(3,4) //临时对象，标准库中常用于return语句
+> ```
+>
+> 
 
 # 其他
 
@@ -1131,19 +1207,100 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 
 # 编写c++程序的感悟
 
+## 编写感悟
+
 > #### 1.类成员变量一般使用private访问权限
 >
 > #### 2. 函数参数尽量pass by the reference而不要pass by the value若不需要改变引用的值就加个const
 >
-> #### 3. 函数返回值也是如此尽量return by the reference而不要return by the value,除非有必须return by the value的情况
+> #### 3. 函数返回值也是如此尽量return by the reference而不要return by the value,除非有必须return by the value的情况 --------------------------------->（如果函数的返回值是在函数内部中创建出来的，则就不能传出去，因为函数结束后，这个变量的作用域结束）
 >
 > #### 4. 尽量用构造函数初值列表，效率高
 >
 > #### 5.没有改变this类成员数据需求的函数都用const，要不然，创建一个const对象然后调用该函数，因为该函数是非const然后就会出错
 >
-> 
+> #### 6.返回值啊，参数啊，成员函数的等等该用const的还是得用const
 >
 > 
 
 
 
+## 头文件布局
+>* 头文件防卫式声明
+>* 头文件   
+>* 前置声明
+>* 类声明
+>* 类定义
+>
+>```c++
+>//头文件防卫式声明
+>#ifndef MYSTRING_H_
+>#define MYSTRING_H_
+>
+>//include头文件          
+>#include <iostream>
+>#include <cstring>
+>using namespace std;
+>
+>//前置声明
+>class mystring;
+>
+>//类声明
+>class mystring {                                    //带指针的类
+>private:
+>    char * str;
+>public:
+>    mystring(const char * str = nullptr);       //构造函数
+>    mystring(const mystring& t);                //copy构造函数
+>    ~mystring();                                //析构函数
+>    mystring& operator = (const mystring& t);
+>    friend ostream& operator << (ostream& os, const mystring& t);
+>    char* get_str() const {return this->str;}
+>};
+>
+>//类定义
+>inline
+>mystring::mystring(const char * str) {
+>if(str != nullptr) {
+>    this->str = new char[strlen(str) + 1];
+>    strcpy(this->str, str);
+>}
+>else{
+>    this->str = new char[1];
+>    this->str[0] = '\0';
+>}
+>}
+>
+>inline
+>mystring::mystring(const mystring& t) {
+>//delete[] this->str;                                //问题：???为什么这里不能用delete呢??
+>this->str = new char[strlen(t.str) + 1];
+>strcpy(this->str, t.str);
+>}
+>
+>inline
+>mystring::~mystring() {
+>delete[] str;
+>}
+>
+>inline
+>mystring& mystring::operator = (const mystring& t) {
+>if(this == &t) {                                    //一定要检查是不是自我赋值
+>    return *this;                             
+>}
+>delete[] this->str;                               //问题：???为什么这里能用delete呢??
+>this->str = new char[strlen(t.str) + 1];
+>strcpy(this->str, t.str);
+>return *this;
+>}
+>
+>inline
+>ostream& operator << (ostream& os, const mystring& t) {
+>os << t.str;
+>return os;
+>}
+>
+>#endif
+>```
+>
+>
