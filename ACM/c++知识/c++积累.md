@@ -106,7 +106,7 @@
 >     #ifndef MYTIME_H_
 >     #define MYTIME_H_
 >     #include <iostream>
->                                                                                                                                                             
+>     
 >     class Time{
 >         private:
 >             int hours;
@@ -122,8 +122,52 @@
 >             friend Time operator *(const double& n, const Time& t) {return t * n;} //通过非成员函数进行重载
 >             friend std::ostream& operator <<(std::ostream& os, const Time& t);	   //通过非成员函数进行重载
 >     };
->                                                                                                                                                             
+>     
 >     #endif
+>     ```
+>
+> * 单目运算符的特殊例子++()跟++(int)
+>
+>     ```c++
+>     #include <bits/stdc++.h>
+>     using namespace std;
+>     class Time{
+>         private:
+>             int hours, minutes;
+>         public:
+>             Time(int hs = 0 , int mi = 0):hours(hs), minutes(mi){}
+>             int getHours() const {return this->hours;}
+>             int getMinutes() const {return this->minutes;}
+>             //重载前置的++
+>             Time& operator ++ () {
+>                 if(++minutes >= 60) minutes = 0, hours++;
+>                 return *this;
+>             }
+>             //重载后置的++       (这里的int)只是起到占位符的作用
+>             Time operator ++(int) {
+>                 Time prev = *this;
+>                 ++(*this);
+>                 return prev;
+>             }
+>             
+>             Time operator + (const Time& t) {
+>                 Time total(0, 0);
+>                 total.minutes = this->minutes + t.minutes;
+>                 total.hours = this->hours + t.hours + total.minutes / 60;
+>                 total.minutes %= 60;
+>                 return total;
+>             }
+>             friend ostream& operator << (ostream& os, const Time& t) {
+>                 os << "(" << t.getHours() << "," << t.getMinutes() << ")";
+>             }
+>     };
+>     int main(void) {
+>         Time t1(1,59), t2(2,59);
+>         cout << t1++ << endl;
+>         cout << t1 << endl;
+>         cout << ++t2 << endl;
+>         return 0;
+>     }
 >     ```
 >
 >     
@@ -837,6 +881,9 @@ reason:第一次初始化为1后只会调用该函数只会就不会初始化了
 > #### 概述
 >
 > `inline`功能类似于`define`，它是对编译器的一种建议，函数过于复杂的话编译器也实现不了,毕竟只是给编译器的一种建议而已
+>
+> > * 在类中定义的函数，全部默认为内联函数，可以加inline也可以不加inline
+> > * 在类中声明，再类外定义的函数，如果类中声明没加inline。则在类外定义该成员函数时加了inline，该成员函数也为内联函数。
 
 # 指针
 
